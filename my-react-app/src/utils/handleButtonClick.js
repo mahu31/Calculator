@@ -6,8 +6,7 @@ const handleButtonClick = (item, calculator, setDisplay, handleResetClick, handl
         case "=":
             handleEqualsClick();
             break;
-        //     TODO check it
-        case item.match(/[0-9]/) ? item : null: // This will evaluate to the item if it is a digit
+        case item.match(/[0-9]/) ? item : null:
             handleDigitClick(item);
             break;
         default:

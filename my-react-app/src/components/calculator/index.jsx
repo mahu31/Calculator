@@ -8,8 +8,8 @@ import handleButtonClick from "../../utils/handleButtonClick.js";
 const CalculatorApp = () => {
   const [calculator] = useState(new Calculator());
   const [display, setDisplay] = useState("");
-  const [previousDisplay, setPreviousDisplay] = useState(""); // Initialize previousDisplay as an empty string
-  const [operator, setOperator] = useState(""); // State for the operator
+  const [previousDisplay, setPreviousDisplay] = useState("");
+  const [operator, setOperator] = useState("");
 
   const handleDigitClick = (digit) => {
     calculator.inputDigit(digit);
@@ -17,10 +17,10 @@ const CalculatorApp = () => {
   };
 
   const handleOperatorClick = (operator) => {
-    setPreviousDisplay(calculator.getDisplayValue()); // Save current value as previous
-    setOperator(operator); // Set the current operator
+    setPreviousDisplay(calculator.getDisplayValue());
+    setOperator(operator);
     calculator.inputOperator(operator);
-    setDisplay(""); // Set display to empty string for the next input
+    setDisplay("");
   };
 
   const handleEqualsClick = () => {
