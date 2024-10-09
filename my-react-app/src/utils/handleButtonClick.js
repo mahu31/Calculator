@@ -5,6 +5,8 @@ const handleButtonClick = (item, calculator, setDisplay, handleResetClick, handl
         handleEqualsClick();
     } else if (!isNaN(item) || item === ".") { // If it's a digit or decimal point
         handleDigitClick(item);
+    } else if (item === "sin" || item === "cos") {
+        handleOperatorClick(item); // Handle trig functions
     } else {
         handleOperatorClick(item);
     }
