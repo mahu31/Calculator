@@ -3,7 +3,8 @@ const buttonGroups = [
     ["4", "5", "6", "*"],
     ["1", "2", "3", "-"],
     ["0", ".", "=", "+"],
-    ["sin", "cos", "C"]
+    // ["sin", "cos", "C"]
+    ["C"]
 ];
 
 export default buttonGroups;
