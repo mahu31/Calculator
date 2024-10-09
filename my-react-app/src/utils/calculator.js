@@ -26,22 +26,26 @@ class Calculator {
 
     // Handle operator input
     inputOperator(operator) {
-        if (this.waitingForSecondValue && this.operator) {
-            this.operator = operator; // Change operator if the second number hasn't been input yet
-            return;
-        }
+        if (operator === "sin" || operator === "cos") {
+            this.calculateTrigFunction(operator); // Immediately calculate trig functions
+        } else {
+            if (this.waitingForSecondValue && this.operator) {
+                this.operator = operator; // Change operator if the second number hasn't been input yet
+                return;
+            }
 
-        if (this.previousValue === null) {
-            this.previousValue = this.currentValue; // Store the first value
-        } else if (this.operator) {
-            this.calculate(); // Perform calculation if there is already a pending operation
-        }
+            if (this.previousValue === null) {
+                this.previousValue = this.currentValue; // Store the first value
+            } else if (this.operator) {
+                this.calculate(); // Perform calculation if there is already a pending operation
+            }
 
-        this.operator = operator; // Set the new operator
-        this.waitingForSecondValue = true; // Wait for the next value to be input
+            this.operator = operator; // Set the new operator
+            this.waitingForSecondValue = true; // Wait for the next value to be input
+        }
     }
 
-    // Perform calculation
+    // Perform basic calculation
     calculate() {
         const prev = parseFloat(this.previousValue);
         const current = parseFloat(this.currentValue);
@@ -70,6 +74,29 @@ class Calculator {
         this.previousValue = null; // Clear previous value for the next operation
         this.operator = null; // Clear the operator
         this.waitingForSecondValue = false; // Allow input for the next calculation
+    }
+
+    // Perform sin or cos calculation
+    calculateTrigFunction(operator) {
+        const current = parseFloat(this.currentValue);
+
+        if (isNaN(current)) return; // Exit if current value is not a number
+
+        let result;
+        switch (operator) {
+            case "sin":
+                result = Math.sin(current * Math.PI / 180); // Assuming input in degrees
+                break;
+            case "cos":
+                result = Math.cos(current * Math.PI / 180); // Assuming input in degrees
+                break;
+            default:
+                return;
+        }
+
+        this.currentValue = String(result);
+        this.operator = null;
+        this.waitingForSecondValue = false;
     }
 
     // Reset calculator

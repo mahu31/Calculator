@@ -17,15 +17,10 @@ const CalculatorApp = () => {
     };
 
     const handleOperatorClick = (operator) => {
-        if (operator === "-" && display === "") {
-            // If the display is empty and user presses "-" as the first input, handle it as negative sign
-            handleDigitClick("-");
-        } else {
-            setPreviousDisplay(calculator.getDisplayValue());
-            setOperator(operator);
-            calculator.inputOperator(operator);
-            setDisplay(""); // Clear display for the next input
-        }
+        setPreviousDisplay(calculator.getDisplayValue());
+        setOperator(operator);
+        calculator.inputOperator(operator);
+        setDisplay(""); // Clear display for the next input
     };
 
     const handleEqualsClick = () => {
