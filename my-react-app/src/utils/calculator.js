@@ -3,59 +3,46 @@ class Calculator {
         this.currentValue = "0"; // Displayed value
         this.previousValue = null; // Previous value
         this.operator = null; // Operator (+, -, *, /)
-        this.waitingForSecondValue = false; // Track state for next number input
+        this.waitingForSecondValue = false; // To track the state
     }
 
-    // Handle number input (including decimal point)
+    // Handle number input
     inputDigit(digit) {
-        if (digit === "." && this.currentValue.includes(".")) {
-            return; // Prevent multiple decimal points
-        }
-
         if (this.waitingForSecondValue) {
-            this.currentValue = digit === "-" ? "-" : digit;
+            this.currentValue = digit;
             this.waitingForSecondValue = false;
         } else {
-            if (this.currentValue === "0" && digit === "-") {
-                this.currentValue = digit; // Handle negative number input as the first number
-            } else if (this.currentValue === "0" && digit !== ".") {
-                this.currentValue = digit; // Replace "0" with the first input digit unless it's "."
+            if (this.currentValue === "0" && digit !== "-") {
+                this.currentValue = digit;
             } else {
-                this.currentValue += digit; // Append further digits or the first "."
+                this.currentValue += digit;
             }
         }
     }
 
     // Handle operator input
     inputOperator(operator) {
-        // Prevent multiple consecutive operators
-        if (this.waitingForSecondValue && this.operator) {
-            // Perform the calculation if a second operator is pressed after both values are input
-            this.calculate();
-            this.operator = operator; // Update with the new operator
-            this.previousValue = this.currentValue; // Set the result as the new previous value
-            this.waitingForSecondValue = true; // Wait for the next number
-        } else {
-            if (this.previousValue === null) {
-                // If no previous value, set the current as previous
-                this.previousValue = this.currentValue;
-            } else if (this.operator) {
-                // If an operator is already present, calculate first
-                this.calculate();
-            }
-
-            this.operator = operator; // Set the new operator
-            this.waitingForSecondValue = true; // Now wait for the next input
+        if (this.operator && this.waitingForSecondValue) {
+            this.operator = operator;
+            return;
         }
+
+        if (this.previousValue === null) {
+            this.previousValue = this.currentValue;
+        } else if (this.operator) {
+            this.calculate();
+        }
+
+        this.operator = operator;
+        this.waitingForSecondValue = true;
     }
 
-
-    // Perform basic calculation
+    // Perform calculation
     calculate() {
         const prev = parseFloat(this.previousValue);
         const current = parseFloat(this.currentValue);
 
-        if (isNaN(prev) || isNaN(current)) return; // Exit if any value is not a number
+        if (isNaN(prev) || isNaN(current)) return;
 
         let result;
         switch (this.operator) {
@@ -69,16 +56,23 @@ class Calculator {
                 result = prev * current;
                 break;
             case "/":
+                if (current === 0) {
+                    this.currentValue = "Cannot be divided by 0"; // Set error message
+                    this.previousValue = null;
+                    this.operator = null;
+                    this.waitingForSecondValue = false;
+                    return; // Exit calculation
+                }
                 result = prev / current;
                 break;
             default:
                 return;
         }
 
-        this.currentValue = String(result); // Display the result
-        this.previousValue = null; // Clear previous value for the next operation
-        this.operator = null; // Clear the operator
-        this.waitingForSecondValue = false; // Allow input for the next calculation
+        this.currentValue = String(result);
+        this.previousValue = null;
+        this.operator = null;
+        this.waitingForSecondValue = false;
     }
 
     // Reset calculator
